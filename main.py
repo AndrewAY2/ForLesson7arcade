@@ -21,28 +21,22 @@ class MyGame(arcade.Window):
         self.player.center_x = 25
         self.player.center_y = 100
         self.player_spritelist.append(self.player)
+        self.keys_pressed = set()
 
         self.tile_map = arcade.load_tilemap("lesson.tmx",
                                             scaling=0.5)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
         self.obstackles = arcade.SpriteList()
+        self.obstackles.extend(self.scene['ground'])
+        self.obstackles.extend(self.scene['floor1'])
+        self.obstackles.extend(self.scene['floor2'])
 
-        for plat in self.scene['platforms']:
-            if plat.center_y < SCREEN_HEIGHT // 3:
-                plat.boundary_bottom = 32
-                plat.boundary_top = 256
-                plat.change_y = 2
-            else:
-                plat.boundary_bottom = 232
-                plat.boundary_top = 384
-                plat.change_y = 1
-
-                # Физический движок
+        # Физический движок
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player,
             gravity_constant=GRAVITY,
-            walls=self.scene['collision'],
-            platforms=self.scene['platforms']
+            walls=self.obstackles,
+            ladders=self.scene['ladders']
         )
 
     def on_draw(self):
@@ -54,16 +48,30 @@ class MyGame(arcade.Window):
         self.physics_engine.update()
 
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.LEFT:
+        self.keys_pressed.add(key)
+        if key == arcade.key.UP:
+            on_ladder = arcade.check_for_collision_with_list(self.player, self.scene['ladders'])
+            if on_ladder:
+                self.player.change_y = LADDER_SPEED
+        elif key == arcade.key.DOWN:
+            on_ladder = arcade.check_for_collision_with_list(self.player, self.scene['ladders'])
+            if on_ladder:
+                self.player.change_y = -LADDER_SPEED
+        elif key == arcade.key.LEFT:
             self.player.change_x = -PLAYER_SPEED
         elif key == arcade.key.RIGHT:
             self.player.change_x = PLAYER_SPEED
 
     def on_key_release(self, key, modifiers):
+        self.keys_pressed.remove(key)
         if key == arcade.key.LEFT and self.player.change_x < 0:
             self.player.change_x = 0
         elif key == arcade.key.RIGHT and self.player.change_x > 0:
             self.player.change_x = 0
+        elif key == arcade.key.UP and self.player.change_y > 0:
+            self.player.change_y = 0
+        elif key == arcade.key.DOWN and self.player.change_y < 0:
+            self.player.change_y = 0
 
 
 def setup_game(width=768, height=450, title="Ladders Runner"):

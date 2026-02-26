@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="12" height="7" tilewidth="128" tileheight="128" infinite="0" nextlayerid="8" nextobjectid="1">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="12" height="7" tilewidth="128" tileheight="128" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" source="../../fd.tsx"/>
  <layer id="6" name="collision" width="12" height="7" visible="0">
   <data encoding="base64" compression="zlib">
@@ -26,9 +26,9 @@
    eJxjYCAeJJGgdrCCFBqbDwCWmADH
   </data>
  </layer>
- <layer id="7" name="platforms" width="12" height="7">
+ <layer id="8" name="ladders" width="12" height="7">
   <data encoding="base64" compression="zlib">
-   eJxjYBh8gJ0AH5cYLQGxbgAAEPQAJA==
+   eJxjYCAdGBHgo4sZosmh87GJETKTkH5cYuSqJxYAAK0/AlI=
   </data>
  </layer>
 </map>
