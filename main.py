@@ -26,16 +26,12 @@ class MyGame(arcade.Window):
         self.tile_map = arcade.load_tilemap("lesson.tmx",
                                             scaling=0.5)
         self.scene = arcade.Scene.from_tilemap(self.tile_map)
-        self.obstackles = arcade.SpriteList()
-        self.obstackles.extend(self.scene['ground'])
-        self.obstackles.extend(self.scene['floor1'])
-        self.obstackles.extend(self.scene['floor2'])
 
         # Физический движок
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             player_sprite=self.player,
             gravity_constant=GRAVITY,
-            walls=self.obstackles,
+            walls=self.scene['collision'],
             ladders=self.scene['ladders']
         )
 
